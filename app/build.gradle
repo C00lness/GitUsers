@@ -11,6 +11,7 @@ android {
     viewBinding{
         enabled = true
     }
+    dataBinding{enabled = true}
     defaultConfig {
         applicationId "com.example.test_it_cron"
         minSdk 23

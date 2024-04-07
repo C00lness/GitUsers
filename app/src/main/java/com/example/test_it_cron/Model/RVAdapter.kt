@@ -1,30 +1,23 @@
 package com.example.test_it_cron.Model
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
-import androidx.cardview.widget.CardView
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.test_it_cron.R
-import com.example.test_it_cron.View.UserFragment
-
+import com.example.test_it_cron.databinding.ItemBinding
 
 class RVAdapter(): RecyclerView.Adapter<RVAdapter.Holder>() {
-    private  var users: List<User> = listOf()
-    class Holder(itemView: View): RecyclerView.ViewHolder(itemView){
-        fun bind(u: User) = with(itemView){
-            itemView.findViewById<TextView>(R.id.txt_id).text = u.id.toString()
-            itemView.findViewById<TextView>(R.id.txt_login).text = u.login
-            Glide.with(this).load(u.avatar_url).into(itemView.findViewById<ImageView>(R.id.img_avatar))
+    private  var users: List<Users> = listOf()
+    class Holder(val binding: ItemBinding): RecyclerView.ViewHolder(binding.root){
+        fun bind(u: Users) = with(itemView){
+            binding.txtId.text = u.id.toString()
+            binding.txtLogin.text = u.login
+            Glide.with(this).load(u.avatar_url).into(binding.imgAvatar)
 
-            itemView.findViewById<CardView>(R.id.card_view).setOnClickListener{
+            binding.cardView.setOnClickListener{
                 val bundle = Bundle()
                 bundle.putLong("id", u.id)
                 findNavController()
@@ -32,18 +25,12 @@ class RVAdapter(): RecyclerView.Adapter<RVAdapter.Holder>() {
             }
         }
     }
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
-        return Holder(
-            LayoutInflater.from(parent.context).inflate(R.layout.item, parent, false)
-        )
-    }
-
-    override fun onBindViewHolder(holder: Holder, position: Int) {
-        holder.bind(users[position])
-    }
-
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder =
+        Holder(ItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+    override fun onBindViewHolder(holder: Holder, position: Int) = holder.bind(users[position])
     override fun getItemCount(): Int = users.size
-    fun refresh(u: List<User>) {
+
+    fun refresh(u: List<Users>) {
         this.users = u
         notifyItemRangeChanged(0, 10)
     }

@@ -1,16 +1,15 @@
 package com.example.test_it_cron.Network
 
-import io.reactivex.Observable
 import com.example.test_it_cron.Model.User
-import com.example.test_it_cron.Model.UserDetails
-import retrofit2.Call
+import com.example.test_it_cron.Model.Users
+import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Path
 
 interface RetrofitServices {
     @GET("users")
-    fun getUsers(): Observable<List<User>>
+    fun getUsers(): Single<List<Users>>
 
     @GET("users/{user}")
-    fun getUserDetail(@Path("user") user: String): Observable<UserDetails>
+    fun getUser(@Path("user") user: String): Single<User>
 }

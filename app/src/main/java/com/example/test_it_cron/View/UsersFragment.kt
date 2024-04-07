@@ -1,43 +1,52 @@
 package com.example.test_it_cron.View
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.test_it_cron.Model.RVAdapter
 import com.example.test_it_cron.R
-import com.example.test_it_cron.ViewModel.GitViewModel
+import com.example.test_it_cron.ViewModel.UsersViewModel
 import java.util.*
 import androidx.lifecycle.Observer
+import com.example.test_it_cron.Model.App
+import com.example.test_it_cron.ViewModel.UsersViewModelFactory
+import com.example.test_it_cron.databinding.FragmentUsersBinding
+import javax.inject.Inject
 
 class UsersFragment : Fragment() {
-    private lateinit var viewModel: GitViewModel
+    lateinit var viewModel: UsersViewModel
+    @Inject
+    lateinit var viewModelFactory: UsersViewModelFactory
     private var isLastPage: Boolean = false
     private var isLoading: Boolean = false
+    private var _binding: FragmentUsersBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_users, container, false)
+    ): View {
+        _binding = FragmentUsersBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(GitViewModel::class.java)
+        (activity!!.application as App).getComponent().injectUsers(this)
+        viewModel = ViewModelProvider(this, viewModelFactory).get(UsersViewModel::class.java)
         viewModel.getUsers()
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val swipeRefreshLayout: SwipeRefreshLayout = view.findViewById(R.id.container)
 
-        val recyclerView = view.findViewById<RecyclerView>(R.id.recycle)
+        val recyclerView = binding.recycle
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         val adapter = RVAdapter()
         recyclerView.adapter = adapter
@@ -51,21 +60,11 @@ class UsersFragment : Fragment() {
                     adapter.refresh(it)
                 }
                 recyclerView.addOnScrollListener(object : Pagination(recyclerView.layoutManager as LinearLayoutManager) {
-                    override fun isLastPage(): Boolean {
-                        return isLastPage
-                    }
-
-                    override fun isLoading(): Boolean {
-                        return isLoading
-                    }
-
-                    override fun loadMoreItems() {
-                        adapter.refresh(it)
-                    }
+                    override fun isLastPage(): Boolean = isLastPage
+                    override fun isLoading(): Boolean = isLoading
+                    override fun loadMoreItems() = adapter.refresh(it)
                 })
             }
         })
     }
-
-
 }

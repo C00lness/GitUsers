@@ -1,21 +1,16 @@
 package com.example.test_it_cron.View
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.activity.viewModels
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.example.test_it_cron.Model.RVAdapter
-import com.example.test_it_cron.ViewModel.GitViewModel
-import androidx.lifecycle.Observer
+import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
 import com.example.test_it_cron.R
-import java.util.*
+import com.example.test_it_cron.databinding.ActivityMainBinding
+
 
 class MainActivity : AppCompatActivity() {
-
+    var binding: ActivityMainBinding? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
     }
 }

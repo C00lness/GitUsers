@@ -1,19 +1,19 @@
 package com.example.test_it_cron.Model
 
 import android.app.Application
-import com.example.test_it_cron.Di.DaggerRetrofitComponent
-import com.example.test_it_cron.Di.RetrofitComponent
-import com.example.test_it_cron.Di.RetrofitModule
+import com.example.test_it_cron.Di.ApplicationComponent
+import com.example.test_it_cron.Di.DaggerApplicationComponent
+import com.example.test_it_cron.Di.NetworkModule
 
 class App: Application() {
-    private lateinit var rComponent: RetrofitComponent
+    private lateinit var component: ApplicationComponent
 
     override fun onCreate() {
         super.onCreate()
-        rComponent = DaggerRetrofitComponent
+        component = DaggerApplicationComponent
             .builder()
-            .retrofitModule(RetrofitModule()).build()
+            .networkModule(NetworkModule()).build()
     }
 
-    fun getRetrofitComponent(): RetrofitComponent = rComponent
+    fun getComponent(): ApplicationComponent = component
 }
