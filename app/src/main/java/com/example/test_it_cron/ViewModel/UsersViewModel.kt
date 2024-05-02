@@ -18,7 +18,7 @@ class UsersViewModel(private val usersRepository: UsersRepository) : ViewModel()
     private val _users = MutableLiveData<List<Users>>()
     val users: LiveData<List<Users>>
     get() = _users
-    var disposable: Disposable? = null
+    private var disposable: Disposable? = null
 
     fun getUsers(){
         disposable = usersRepository.getUsers()

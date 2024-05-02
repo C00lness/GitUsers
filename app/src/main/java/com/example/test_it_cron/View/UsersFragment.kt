@@ -37,7 +37,7 @@ class UsersFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        (activity!!.application as App).getComponent().injectUsers(this)
+        (requireActivity().application as App).getComponent().injectUsers(this)
         viewModel = ViewModelProvider(this, viewModelFactory).get(UsersViewModel::class.java)
         viewModel.getUsers()
     }
@@ -51,7 +51,7 @@ class UsersFragment : Fragment() {
         val adapter = RVAdapter()
         recyclerView.adapter = adapter
 
-        viewModel.users.observe(this, Observer {
+        viewModel.users.observe(viewLifecycleOwner, Observer {
             it.let {
                 adapter.refresh(it)
                 swipeRefreshLayout.setOnRefreshListener {

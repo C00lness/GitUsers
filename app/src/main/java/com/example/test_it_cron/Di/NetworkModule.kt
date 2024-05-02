@@ -12,7 +12,6 @@ import javax.inject.Singleton
 @Module
 class NetworkModule {
     val BASE_URL = "https://api.github.com/"
-
     @Singleton
     @Provides
     fun getRetrofitInstance(): Retrofit

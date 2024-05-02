@@ -10,9 +10,9 @@ class App: Application() {
 
     override fun onCreate() {
         super.onCreate()
-        component = DaggerApplicationComponent
-            .builder()
-            .networkModule(NetworkModule()).build()
+        component = DaggerApplicationComponent.factory().create(this)
+//            .builder()
+//            .networkModule(NetworkModule()).build()
     }
 
     fun getComponent(): ApplicationComponent = component

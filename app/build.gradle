@@ -2,7 +2,6 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
-    id 'kotlin-android-extensions'
 }
 
 android {
@@ -39,7 +38,7 @@ android {
 
 dependencies {
 
-    implementation 'androidx.core:core-ktx:1.12.0'
+    implementation 'androidx.core:core-ktx:1.13.1'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.11.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
@@ -71,7 +70,7 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
 
     //Rx
-    implementation 'io.reactivex.rxjava2:rxjava:2.1.5'
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.9'
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
 
     //Nav
@@ -79,6 +78,18 @@ dependencies {
     implementation "androidx.navigation:navigation-ui-ktx:2.7.7"
 
     //Dagger
-    kapt "com.google.dagger:dagger-compiler:2.17"
+    kapt "com.google.dagger:dagger-compiler:2.48"
     implementation "com.google.dagger:dagger:2.48"
+
+    //Room
+    def room_version = "2.6.1"
+    apply plugin: 'kotlin-kapt'
+    implementation("androidx.room:room-runtime:$room_version")
+    annotationProcessor("androidx.room:room-compiler:$room_version")
+    annotationProcessor "android.arch.persistence.room:compiler:1.1.1"
+    kapt 'android.arch.persistence.room:compiler:1.1.1'
+
+    kapt("androidx.room:room-compiler:$room_version")
+    implementation("androidx.room:room-ktx:$room_version")
+    implementation("androidx.room:room-rxjava2:$room_version")
 }

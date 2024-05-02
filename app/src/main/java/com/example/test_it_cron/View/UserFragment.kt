@@ -7,8 +7,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.room.Room
 import com.bumptech.glide.Glide
+import com.example.test_it_cron.Db.AppDatabase
 import com.example.test_it_cron.Model.App
+import com.example.test_it_cron.Model.User
+import com.example.test_it_cron.Repository.DbRepository
 import com.example.test_it_cron.ViewModel.UserViewModel
 import com.example.test_it_cron.ViewModel.UserViewModelFactory
 import com.example.test_it_cron.databinding.FragmentUserBinding
@@ -18,12 +22,13 @@ class UserFragment : Fragment() {
     lateinit var viewModel: UserViewModel
     @Inject
     lateinit var viewModelFactory: UserViewModelFactory
+
     private var _binding: FragmentUserBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        (activity!!.application as App).getComponent().injectUser(this)
+        (requireActivity().application as App).getComponent().injectUser(this)
         viewModel = ViewModelProvider(this, viewModelFactory).get(UserViewModel::class.java)
     }
 
@@ -41,7 +46,7 @@ class UserFragment : Fragment() {
         val id = bundle?.getLong("id")
 
         viewModel.getUser(id.toString())
-        viewModel.user.observe(this, Observer {
+        viewModel.user.observe(viewLifecycleOwner, Observer {
             Glide.with(this).load(it.avatar_url).into(binding.imgAvatar)
             binding.txtName.text = "Name: " + it.login
             val email = it.email?:""
@@ -52,6 +57,7 @@ class UserFragment : Fragment() {
             binding.txtFollowing.text = "Подписчики: " + it.following.toString()
             binding.txtFollowers.text = "Подписан: " + it.followers.toString()
             binding.txtCreatedAt.text = "Создан: " + it.created_at?.replace("T", " ")?.substring(0, it.created_at.length - 4)
+
         })
     }
 }
